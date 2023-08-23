@@ -1,2 +1,5 @@
 torch
 opencv-python
+timm
+matplotlib
+pillow
