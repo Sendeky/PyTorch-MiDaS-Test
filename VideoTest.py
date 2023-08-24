@@ -46,10 +46,10 @@ while cap.isOpened():
 
 		if ret:	
 			# img = cv2.imread(frame)
-			img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) 
+			# img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) 
 
-			input_batch = transform(img).to(device)
-			cv2.imshow("Detected lanes", img)
+			input_batch = transform(frame).to(device)
+			cv2.imshow("Detected lanes", frame)
 			
             # start time
 			start_time = time.time()
@@ -59,12 +59,13 @@ while cap.isOpened():
 				prediction = midas(input_batch)
 				prediction = torch.nn.functional.interpolate(
 					prediction.unsqueeze(1),
-                    size=img.shape[:2], mode="bicubic",
+                    size=frame.shape[:2], 
+		            mode="bicubic",
 		            align_corners=False, 
             ).squeeze()
 				
 			output = prediction.cpu().numpy()
-			output2 = output.astype(float) / 255
+			output2 = output.astype(float) / 255    # You can set to 512 to better see difference in output image
 
 			end_time = time.time()
 			print("inference time: ", end_time - start_time)
